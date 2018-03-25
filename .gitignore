@@ -1,0 +1,6 @@
+.vscode/
+node_modules/
+css/
+fonts/
+js/
+package-lock.json
