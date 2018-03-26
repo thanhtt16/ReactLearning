@@ -1,49 +1,61 @@
 import React, {Component} from 'react';
 import './App.css';
-import Product from './components/Product';
+// import Product from './components/Product';
+import User from './components/User';
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.onAddProduct = this
-      .onAddProduct
+    this.onSetState = this
+      .onSetState
       .bind(this);
+    this.state = {
+      products: [
+        {
+          name: 'Iphone 6 plus',
+          price: 1500000,
+          status: true
+        }, {
+          name: 'Iphone 7 plus',
+          price: 1600000,
+          status: true
+        }, {
+          name: 'Iphone 8 plus',
+          price: 1700000,
+          status: true
+        }, {
+          name: 'Iphone X',
+          price: 1800000,
+          status: false
+        }
+      ],
+      isActive: true
+    }
   }
 
-  onAddProduct() {
-    console.log(this.refs);
-  }
-
-  onClick() {
-    console.log("Bạn vừa click vào button");
+  onSetState() {
+    if (this.state.isActive) 
+      this.setState({isActive: false})
+    else 
+      this.setState({isActive: true})
   }
 
   render() {
-    var products = [
-      {
-        name: 'Iphone 6 plus',
-        price: 1500000,
-        status: true
-      }, {
-        name: 'Iphone 7 plus',
-        price: 1600000,
-        status: true
-      }, {
-        name: 'Iphone 8 plus',
-        price: 1700000,
-        status: true
-      }, {
-        name: 'Iphone X',
-        price: 1800000,
-        status: false
-      }
-    ]
-    var elements = products.map((product, item) => {
-      if (product.status) 
-        return <Product key={item} name={product.name} price={product.price}/>
-      else 
-        return ''
-    })
+    var elements = this
+      .state
+      .products
+      .map((product, item) => {
+        let result = '';
+        if (product.status) 
+          result = <tr key={item}>
+            <td>{item}</td>
+            <td>{product.name}</td>
+            <td>
+              <span className="label label-success">{product.price}</span>
+            </td>
+          </tr>
+        return result;
+      })
     return (
       <div>
         <nav className="navbar navbar-inverse">
@@ -54,43 +66,32 @@ class App extends Component {
           <div className="row">
             <div className="row">
 
-              <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <table className="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {elements}
+                </tbody>
+              </table>
 
-                <div className="panel panel-danger">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Thêm sản phẩm</h3>
-                  </div>
-                  <div className="panel-body">
-                    <div className="form-group">
-                      <label htmlFor="">Tên sản phẩm</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id=""
-                        placeholder="Input field"
-                        ref="name"/>
-                    </div>
-                    <button type="submit" className="btn btn-primary" onClick={this.onAddProduct}>
-                      Lưu
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {elements}
-              </div>
-
-              <div className="row">
-                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                  <button type="button" className="btn btn-warning" onClick={this.onClick}>
-                    Click Me !
-                  </button>
-                </div>
-              </div>
+              <button type="button" className="btn btn-danger" onClick={this.onSetState}>
+                Active: {this.state.isActive === true
+                  ? 'true'
+                  : 'false'}
+              </button>
 
             </div>
           </div>
+          <hr/>
+          <div className="row">
+            <User/>
+          </div>
+
         </div>
       </div>
     );
